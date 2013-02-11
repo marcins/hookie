@@ -12,7 +12,17 @@ module Hookie
       end
 
       def should_run?
-        @framework.changes.any? and @config[:apikey] and @config[:room]
+        warnings = []
+        if @framework.changes.empty?
+          log "No changes"
+          return false
+        end
+        warnings << "hookie.hipchat.apikey not set!" unless @config[:apikey]
+        warnings << "hookie.hipchat.room not set!" unless @config[:room]
+
+        log warnings.join(", ")
+
+        warnings.empty?
       end
 
       def post_receive
