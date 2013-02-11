@@ -9,9 +9,11 @@ Gem::Specification.new do |gem|
   gem.version       = Hookie::VERSION
   gem.authors       = ["Marcin Szczepanski"]
   gem.email         = ["marcins@webqem.com"]
-  gem.description   = %q{Framework for writing gitolite hooks with Ruby}
-  gem.summary       = %q{Framework for writing gitolite hooks with Ruby}
-  gem.homepage      = ""
+  gem.description   = %q{Hookie provides a way to write git hooks with ruby without too much worrying about any of the plumbing required, you can easily write your own plugins and focus on the core of your functionality. 
+
+    Hookie includes plugins for Jenkins and HipChat.}
+  gem.summary       = %q{Framework for writing gitolite/git hooks with Ruby}
+  gem.homepage      = "https://github.com/marcins/hookie"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
