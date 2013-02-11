@@ -5,7 +5,7 @@ module Hookie
 
       @config = {}
       @framework.config.map do |k,v|
-        if k.start_with?("hooks.#{self.config_key}")
+        if k.start_with?("hookie.#{self.config_key}")
           @config[k.split(".")[2..-1].join("_").to_sym] = v
         end
       end
