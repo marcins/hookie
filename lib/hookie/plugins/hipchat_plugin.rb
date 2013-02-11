@@ -12,7 +12,7 @@ module Hookie
       end
 
       def should_run?
-        @config[:apikey] and @config[:room]
+        @framework.changes.any? and @config[:apikey] and @config[:room]
       end
 
       def post_receive
