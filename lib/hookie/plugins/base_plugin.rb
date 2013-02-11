@@ -4,9 +4,9 @@ module Hookie
       @framework = framework
 
       @config = {}
-      @framework.config.map do |k,v|
+      @framework.config.keys() do |k|
         if k.start_with?("hookie.#{self.config_key}")
-          @config[k.split(".")[2..-1].join("_").to_sym] = v
+          @config[k.split(".")[2..-1].join("_").to_sym] = @framework.config[k]
         end
       end
 

@@ -1,15 +1,18 @@
 module Hookie
+
   class Framework
 
     require 'grit'
 
-    attr_reader :config, :changes
+    attr_reader :changes
+
+    def self.hook(hook)
+      Hookie::Framework.new hook, ARGV[1] || Dir.getwd
+    end
 
     def initialize(hook, repo_path)
-
       @repo = Grit::Repo.new(repo_path)
       read_changes
-      read_config
       run_plugins(hook)
     end
 
@@ -17,18 +20,15 @@ module Hookie
 
       # we are only allowed to run if the plugin is in the list of allowed
       # plugins
-      unless @config['hookie.core.allowedplugins']
+      unless config['hookie.core.allowedplugins']
         exit 255
       end
 
-      plugin_paths = $: + [File.join(File.dirname(__FILE__),"plugins")]
-      plugin_paths.each do |path|
-        Dir.glob(File.join(path, "*_plugin.rb")) do |filename|
-          begin
-            require filename
-          rescue LoadError => e
-            puts "Unable to load plugin #{filename}: #{e}"
-          end
+      Dir.glob(File.join(File.join(File.dirname(__FILE__),"plugins"), "*_plugin.rb")) do |filename|
+        begin
+          require filename
+        rescue LoadError => e
+          puts "Unable to load plugin #{filename}: #{e}"
         end
       end
 
@@ -36,7 +36,7 @@ module Hookie
         clazz = Hookie::Plugin.const_get(constant)
         if clazz < Hookie::BasePlugin
           plugin = clazz.new(self)
-          if @config['hookie.core.allowedplugins'].include?(plugin.config_key) and
+          if config['hookie.core.allowedplugins'].include?(plugin.config_key) and
             plugin.respond_to?(hook) and
             plugin.should_run?
               plugin.send(hook)
@@ -76,15 +76,8 @@ module Hookie
       @repo.heads.collect { |head| head.name if head.commit.id == commit.id }.compact
     end
 
-    private
-    def read_config
-      @config = {}
-      raw_config = `git config -l --local`
-      raw_config.split("\n").each do |config_item|
-        if config_item =~ /([^=]+)=(.*)/
-          @config[$1] = $2
-        end
-      end
+    def config
+      @repo.config
     end
 
     private
