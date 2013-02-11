@@ -20,8 +20,15 @@ module Hookie
         exit 255
       end
 
-      Dir.glob(File.join(File.dirname(__FILE__),"plugins","*.rb")) do |filename|
-        require filename
+      plugin_paths = $: + [File.join(File.dirname(__FILE__),"plugins")]
+      plugin_paths.each do |path|
+        Dir.glob(File.join(path, "*_plugin.rb")) do |filename|
+          begin
+            require filename
+          rescue LoadError => e
+            puts "Unable to load plugin #{filename}: #{e}"
+          end
+        end
       end
 
       Hookie::Plugin.constants.each do |constant|
