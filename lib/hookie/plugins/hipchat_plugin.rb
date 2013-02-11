@@ -20,7 +20,7 @@ module Hookie
         warnings << "hookie.hipchat.apikey not set!" unless @config[:apikey]
         warnings << "hookie.hipchat.room not set!" unless @config[:room]
 
-        log warnings.join(", ")
+        log warnings.join(", ") unless warnings.empty?
 
         warnings.empty?
       end
