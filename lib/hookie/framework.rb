@@ -15,8 +15,9 @@ module Hookie
 
     def run_plugins(hook)
 
+      # we are only allowed to run if the plugin is in the list of allowed
+      # plugins
       unless @config['hookie.core.allowedplugins']
-        puts "Missing hookie.core.allowedplugins config variable!"
         exit 255
       end
 
