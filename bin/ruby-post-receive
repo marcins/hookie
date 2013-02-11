@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require "gitolite_hooks"
+
+Gitolite::Hooks::Framework.new ARGV[0] || Dir.getwd
