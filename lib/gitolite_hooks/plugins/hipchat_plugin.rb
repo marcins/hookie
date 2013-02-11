@@ -15,7 +15,7 @@ module GitoliteHooks
         @config[:apikey] and @config[:room]
       end
 
-      def run
+      def post_receive
         log "Sending message to HipChat ... "
         response = {}
         #log "Message: #{format_message}"

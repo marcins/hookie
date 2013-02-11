@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 require "gitolite_hooks"
 
-Gitolite::Hooks::Framework.new ARGV[0] || Dir.getwd
+Gitolite::Hooks::Framework.new ARGV[0] || Dir.getwd, File.basename(__FILE__).split("-")[1..-1].join("_").to_sym

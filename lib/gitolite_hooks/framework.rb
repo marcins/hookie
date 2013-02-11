@@ -6,16 +6,16 @@ module Gitolite
 
       attr_reader :config, :changes
 
-      def initialize(repo_path)
+      def initialize(repo_path, hook)
 
         @repo = Grit::Repo.new(repo_path)
 
         read_changes
         read_config
-        run_plugins
+        run_plugins(hook)
       end
 
-      def run_plugins
+      def run_plugins(hook)
         Dir.glob(File.join(File.dirname(__FILE__),"plugins","*.rb")) do |filename|
           require filename
         end
@@ -24,7 +24,11 @@ module Gitolite
           clazz = GitoliteHooks::Plugin.const_get(constant)
           if clazz < GitoliteHooks::BasePlugin
             plugin = clazz.new(self)
-            plugin.run if @config['hooks.allowedplugins'].include?(plugin.config_key) and plugin.should_run?
+            if @config['hooks.allowedplugins'].include?(plugin.config_key) and
+              plugin.respond_to?(hook) and
+              plugin.should_run?
+                plugin.send(hook)
+            end
           end
         end
       end

@@ -3,8 +3,8 @@ require_relative "base_plugin"
 module GitoliteHooks
   module Plugin
     class EmptyPlugin < BasePlugin
-      def run
-        log "Empty Plugin"
+      def post_receive
+        log "Empty Plugin - post_receive"
       end
     end
   end
