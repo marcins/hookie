@@ -1,4 +1,4 @@
-module GitoliteHooks
+module Hookie
   class BasePlugin
     def initialize(framework)
       @framework = framework

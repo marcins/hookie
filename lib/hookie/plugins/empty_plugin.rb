@@ -1,6 +1,6 @@
 require_relative "base_plugin"
 
-module GitoliteHooks
+module Hookie
   module Plugin
     class EmptyPlugin < BasePlugin
       def post_receive

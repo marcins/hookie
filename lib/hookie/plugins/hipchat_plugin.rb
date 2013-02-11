@@ -4,7 +4,7 @@ require 'time'
 require 'net/https'
 require 'json'
 
-module GitoliteHooks
+module Hookie
   module Plugin
     class HipChatPlugin < BasePlugin
       def to_s

@@ -2,11 +2,11 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require 'gitolite_hooks'
+require 'hookie'
 
 Gem::Specification.new do |gem|
-  gem.name          = "gitolite_hooks"
-  gem.version       = GitoliteHooks::VERSION
+  gem.name          = "hookie"
+  gem.version       = Hookie::VERSION
   gem.authors       = ["Marcin Szczepanski"]
   gem.email         = ["marcins@webqem.com"]
   gem.description   = %q{Framework for writing gitolite hooks with Ruby}

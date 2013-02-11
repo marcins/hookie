@@ -20,9 +20,9 @@ module Gitolite
           require filename
         end
 
-        GitoliteHooks::Plugin.constants.each do |constant|
-          clazz = GitoliteHooks::Plugin.const_get(constant)
-          if clazz < GitoliteHooks::BasePlugin
+        Hookie::Plugin.constants.each do |constant|
+          clazz = Hookie::Plugin.const_get(constant)
+          if clazz < Hookie::BasePlugin
             plugin = clazz.new(self)
             if @config['hooks.allowedplugins'].include?(plugin.config_key) and
               plugin.respond_to?(hook) and
