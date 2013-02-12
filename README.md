@@ -50,6 +50,10 @@ You can also install Hookie hooks manually, by adding them to the hooks director
 
 ## Configuration
 
+**NOTE** for gitolite you will need to make the following change to .gitolite.rc or your config keys won't work!
+
+    GIT_CONFIG_KEYS             =>  'hookie\..*',
+
 Hookie was written such that it can be configured using Gitolite's ability to set git config keys via the gitolite-admin repository.
 
 You can set "global" config keys using the special repository @all in gitolite, and override or set project specific keys within the repository itself. This makes it easy to, for example, set your HipChat API key for all repos, but then set the room that gets notified in each repo separately - and this can all be done via the gitolite-admin repository, without requiring access to the git server.
