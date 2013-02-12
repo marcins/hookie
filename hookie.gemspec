@@ -24,4 +24,5 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'diff-lcs', '~> 1.1.3'
 
   gem.add_development_dependency 'rspec', '~> 2.12.0'
+  gem.add_development_dependency 'simplecov', '>= 0.4.0'
 end
