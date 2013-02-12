@@ -7,7 +7,7 @@ module Hookie
       @framework = framework
 
       @config = {}
-      @framework.config.keys() do |k|
+      @framework.config.keys.each do |k|
         if k.start_with?("hookie.#{self.config_key}")
           @config[k.split(".")[2..-1].join("_").to_sym] = @framework.config[k]
         end

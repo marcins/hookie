@@ -29,7 +29,7 @@ describe Hookie::Plugin::HipChatPlugin do
       end
 
       it "should run when there are no changes and config is correct" do
-        @config.should_receive(:keys).and_yield('hookie.hipchat.apikey').and_yield('hookie.hipchat.room')
+        @config.should_receive(:keys).and_return(['hookie.hipchat.apikey','hookie.hipchat.room'])
         @config.should_receive('[]').with('hookie.hipchat.apikey').and_return("ABC123")
         @config.should_receive('[]').with('hookie.hipchat.room').and_return("1234")
         plugin = Hookie::Plugin::HipChatPlugin.new @hookie

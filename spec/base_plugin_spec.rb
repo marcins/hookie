@@ -29,7 +29,7 @@ describe Hookie::BasePlugin do
     end
 
     it "should read the correct config" do
-      @config.should_receive(:keys).once.and_yield("core.key").and_yield("hookie.base.mykey")
+      @config.should_receive(:keys).once.and_return(["core.key","hookie.base.mykey"])
       @config.should_receive('[]').with('hookie.base.mykey').and_return("value")
       @plugin = Hookie::BasePlugin.new @hookie
       @plugin.config.should have(1).items
