@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+require 'hookie'
+if ARGV.length < 1
+  puts "Usage: hookie hook_name [repo_path]"
+  exit 1
+end
+Hookie::Framework.hook ARGV[0]
