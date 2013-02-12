@@ -15,6 +15,15 @@ describe Hookie do
       hookie = Hookie::Framework.new "test_hook", Dir.getwd
     end
 
+    it "can can use the hook static" do
+      @config.stub(:[])
+      begin
+        Hookie::Framework.hook "foo"
+      rescue SystemExit => e
+        e.status.should be 255
+      end
+    end
+
     it "reads changes" do
       commit = double('Grit::Commit')
       @repo.should_receive(:commits).with("b37c9728362ec39ce57adaab6ad9f0225d3513fe", 1).once.and_return([commit])
@@ -30,6 +39,50 @@ describe Hookie do
 
       change[:commit].should be commit
     end
+  end
+
+  context "runner" do
+    before(:each) do
+      @config.stub(:keys).and_return([])
+      @hookie = Hookie::Framework.new "test_hook", Dir.getwd
+    end
+
+    it "exits if no allowed plugins set" do
+      @config.stub(:[]).with("hookie.core.allowedplugins").and_return(nil)
+      begin
+        @hookie.run_plugins("test")
+      rescue SystemExit => e
+        e.status.should be 255
+      end
+    end
+
+    module Hookie
+      module Plugin
+        class TestPlugin < BasePlugin
+          def test
+            log "ran test"
+          end
+          def errors
+            raise "Fudge"
+          end
+        end
+      end
+    end
+
+   it "runs a plugin" do
+      @config.stub(:keys).and_return(["hookie.core.allowedplugins"])
+      @config.stub(:[]).with("hookie.core.allowedplugins").and_return(["test"])
+      @hookie.should_receive(:log).with(anything, "ran test")
+      @hookie.run_plugins("test")
+    end
+
+   it "handles plugin failure" do
+      @config.stub(:keys).and_return(["hookie.core.allowedplugins"])
+      @config.stub(:[]).with("hookie.core.allowedplugins").and_return(["test"])
+      @hookie.should_receive(:log).with(anything, /exception/i)
+      @hookie.run_plugins("errors")
+    end
+
   end
 
   context "helpers" do
@@ -62,5 +115,53 @@ describe Hookie do
       commit.stub(:id).and_return("ABC")
       @hookie.commit_url(commit).should eq "TEST testrepo TEST ABC"
     end
+
+    it "correctly gets the name of a bare repo" do
+      @repo.stub(:bare).and_return(true)
+      @repo.stub(:path).and_return("/foo/bar/baz.git")
+      @config.stub(:[]).with('hookie.core.repo.name').and_return(nil)
+      @hookie.repo_name.should eq "baz"
+    end
+
+    it "correctly gets the name of a non-bare repo" do
+      @repo.stub(:bare).and_return(false)
+      @repo.stub(:path).and_return("/foo/bar/baz/.git")
+      @config.stub(:[]).with('hookie.core.repo.name').and_return(nil)
+      @hookie.repo_name.should eq "baz"
+    end
+
+    it "collects heads" do
+      def head_helper(name, commit_id)
+        head = double("Grit::Head")
+        head.stub(:name).and_return(name)
+        commit = double("Grit::Commit")
+        commit.stub(:id).and_return(commit_id)
+        head.stub(:commit).and_return(commit)
+        head
+      end
+      heads = [
+        head_helper("one", "1"),
+        head_helper("two", "2"),
+        head_helper("three", "2")
+      ]
+
+      @repo.stub(:heads).with(any_args).and_return(heads)
+      commit = double("Grit::Commit")
+      commit.stub(:id).and_return("1")
+      @hookie.head_names_for_commit(commit).should have(1).items
+    end
+
+    it "logs stuff" do
+      class TestPlugin
+        def to_s
+          "Test"
+        end
+      end
+      plugin = TestPlugin.new
+      Time.stub(:now).and_return(Time.parse("01/04/2013 09:00:00"))
+      @hookie.should_receive(:puts).with("[2013-04-01 09:00:00] Test: test")
+      @hookie.log(plugin, "test")
+    end
+
   end
 end
