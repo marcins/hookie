@@ -38,7 +38,11 @@ module Hookie
           if config['hookie.core.allowedplugins'].include?(plugin.config_key) and
             plugin.respond_to?(hook) and
             plugin.should_run?
-              plugin.send(hook)
+              begin
+                plugin.send(hook)
+              rescue Exception => e
+                log plugin, "ERROR: plugin threw an exception: #{e}"
+              end
           end
         end
       end
