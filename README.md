@@ -10,8 +10,13 @@ Install the gem on your git server
 
 You then need to create a post-receive script in your repository's hooks directory, there are a couple of ways to do this, see below for some options. The post-receive hook will look like this:
 
-    #!/bin/sh
-    hookie post_receive
+    #!/usr/bin/env ruby
+    require 'hookie'
+
+    # Add your plugins here
+    # require 'my_plugin'
+
+    Hookie::Framework.hook "post_receive"
 
 ### Installing hooks with gitolite
 
