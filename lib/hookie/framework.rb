@@ -7,17 +7,16 @@ module Hookie
     attr_reader :changes
 
     def self.hook(hook)
-      Hookie::Framework.new hook, ARGV[1] || Dir.getwd
+      hookie = Hookie::Framework.new hook, ARGV[1] || Dir.getwd
+      hookie.run_plugins(hook)
     end
 
     def initialize(hook, repo_path)
       @repo = Grit::Repo.new(repo_path)
       read_changes
-      run_plugins(hook)
     end
 
     def run_plugins(hook)
-
       # we are only allowed to run if the plugin is in the list of allowed
       # plugins
       unless config['hookie.core.allowedplugins']
@@ -51,20 +50,20 @@ module Hookie
     end
 
     def repo_url
-      if @config['hookie.core.web.browse']
-        @config['hookie.core.web.browse'].gsub("%REPO%", repo_name)
+      if config['hookie.core.web.browse']
+        config['hookie.core.web.browse'].gsub("%REPO%", repo_name)
       end
     end
 
     def commit_url(commit)
-      if @config['hookie.core.web.commit']
-        @config['hookie.core.web.commit'].gsub("%REPO%", repo_name).gsub("%COMMIT%", commit.id)
+      if config['hookie.core.web.commit']
+        config['hookie.core.web.commit'].gsub("%REPO%", repo_name).gsub("%COMMIT%", commit.id)
       end
     end
 
     def repo_name
-      if @config['hookie.core.repo.name']
-        @config['hookie.core.repo.name']
+      if config['hookie.core.repo.name']
+        config['hookie.core.repo.name']
       elsif @repo.bare
         File.basename(@repo.path, ".git")
       else

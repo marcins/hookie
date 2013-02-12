@@ -5,13 +5,14 @@ module Hookie
     class JenkinsPlugin < BasePlugin
 
       def should_run?
-        unless @config[:url]
+        #puts "Config: #{config}"
+        unless config[:url]
           log "Jenkins URL not configured!"
           return false
         end
 
-        if @config[:branches]
-          allowed_branches = @config[:branches].split(",")
+        if config[:branches]
+          allowed_branches = config[:branches].split(",")
           commits = @framework.changes.map { |change| change[:commit] }
           branches = commits.collect { |commit| @framework.head_names_for_commit(commit) }
           branches.flatten!
@@ -24,11 +25,11 @@ module Hookie
       end
 
       def post_receive
-        uri = URI.parse(@config[:url])
+        uri = URI.parse(config[:url])
         http = Net::HTTP.new(uri.host, uri.port)
         request = Net::HTTP::Get.new(uri.request_uri)
-        if @config[:auth]
-          request.basic_auth(*@config[:auth].split(":"))
+        if config[:auth]
+          request.basic_auth(*config[:auth].split(":"))
         end
         response = http.request(request)
         log "Response: #{response.body}"

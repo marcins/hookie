@@ -1,5 +1,8 @@
 module Hookie
   class BasePlugin
+
+    attr_reader :config
+
     def initialize(framework)
       @framework = framework
 
@@ -28,9 +31,9 @@ module Hookie
       plugin_name.downcase
     end
 
-    private
+    protected
     def plugin_name
-      @plugin_name ||= self.class.to_s[/.*::(\w+)Plugin/, 1]
+      @plugin_name ||= self.class.to_s[/(.*::)?(\w+)Plugin/, 2]
     end
 
   end
