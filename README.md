@@ -2,6 +2,8 @@
 
 Hookie is a pluggable framework for creating git hooks using Ruby. It was originally designed for writing hooks for gitolite, but should work for any hooks, including local ones.
 
+[![Build Status](https://travis-ci.org/marcins/hookie.png?branch=master,develop)](https://travis-ci.org/[YOUR_GITHUB_USERNAME]/[YOUR_PROJECT_NAME])
+
 ## Background
 
 After we had setup [HipChat](http://hipchat.com) at our organisation I wanted to get notifications from gitolite pushes pushed to HipChat. I found the [gitolite-hipchat-notification](https://github.com/peplin/gitolite-hipchat-notification) project, and [forked it](https://github.com/marcins/gitolite-hipchat-notification) and cleaned it up a bit for my purposes. However this script wasn't very flexible in that you needed to add it individually to each repo (or suffer with a single config). Then I wanted to add Jenkins build notifications as well, so had to enhance the script to support running multiple tasks. Eventually it was all getting too crufty and so Hookie was born!
