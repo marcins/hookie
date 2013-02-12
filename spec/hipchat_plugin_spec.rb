@@ -17,6 +17,10 @@ describe Hookie::Plugin::HipChatPlugin do
     end
 
     context "config" do
+      it "identifies itself" do
+        @plugin.to_s.should eq "HipChat Notifier"
+      end
+
       it "shouldn't run only when there are no changes" do
         @hookie.should_receive(:changes).once.and_return([])
         @plugin.should_run?.should be_false
@@ -39,13 +43,29 @@ describe Hookie::Plugin::HipChatPlugin do
       end
     end
 
-    it "sends the correct message" do
+    it "responds to success" do
       # FIXME this neds to be better
       @plugin.stub(:format_message).and_return("message")
-      @plugin.should_receive(:speak).with("message").and_return({"status" => "sent"})
-      @hookie.should_receive(:log).twice
+      @plugin.should_receive(:speak).with("message").and_return({:status => "sent"})
+      @hookie.should_receive(:log).with(any_args)
+      @hookie.should_receive(:log).with(@plugin, /sent/)
       @plugin.post_receive
     end
 
+    it "responds to failure" do
+      @plugin.stub(:format_message).and_return("message")
+      @plugin.should_receive(:speak).with("message").and_return({error: { message: "ERROR"}})
+      @hookie.should_receive(:log).with(any_args)
+      @hookie.should_receive(:log).with(@plugin, /ERROR/)
+      @plugin.post_receive
+    end
+
+    it "responds to an unknown response" do
+      @plugin.stub(:format_message).and_return("message")
+      @plugin.should_receive(:speak).with("message").and_return({})
+      @hookie.should_receive(:log).with(any_args)
+      @hookie.should_receive(:log).with(@plugin, /unknown/i)
+      @plugin.post_receive
+    end
   end
 end

@@ -19,6 +19,11 @@ describe Hookie::BasePlugin do
     it "should initialise" do
 
     end
+
+    it "is runnable" do
+      @plugin.should_run?.should be_true
+    end
+
     it "should correctly derive the plugin name" do
       @plugin.to_s.should eq "Base"
       @plugin.config_key.should eq "base"
