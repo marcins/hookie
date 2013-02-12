@@ -2,7 +2,8 @@
 
 Hookie is a pluggable framework for creating git hooks using Ruby. It was originally designed for writing hooks for gitolite, but should work for any hooks, including local ones.
 
-[![Build Status](https://travis-ci.org/marcins/hookie.png?branch=master,develop)](https://travis-ci.org/[YOUR_GITHUB_USERNAME]/[YOUR_PROJECT_NAME])
+[![Build Status](https://travis-ci.org/marcins/hookie.png?branch=master)](https://travis-ci.org/marcins/hookie) (master)
+[![Build Status](https://travis-ci.org/marcins/hookie.png?branch=develop)](https://travis-ci.org/marcins/hookie) (develop)
 
 ## Background
 
