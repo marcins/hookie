@@ -4,4 +4,4 @@ if ARGV.length < 1
   puts "Usage: hookie hook_name [repo_path]"
   exit 1
 end
-Hookie::Framework.new ARGV[0], ARGV[1] || Dir.getwd
+Hookie::Framework.hook ARGV[0]
