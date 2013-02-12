@@ -12,7 +12,7 @@ Hookie includes those aforementioned plugins for HipChat and Jenkins in the base
 
 ## Acknowledgements
 
-Hookie is built on the base of @peplin's (gitolite-hipchat-notification)[https://github.com/peplin/gitolite-hipchat-notification] project, which was originally forked from (gitolite-campfire-notification)[https://github.com/LegionSB/gitolite-campfire-notification] - the magic of Open Source!
+Hookie is built on the base of @peplin's [gitolite-hipchat-notification](https://github.com/peplin/gitolite-hipchat-notification) project, which was originally forked from [gitolite-campfire-notification](https://github.com/LegionSB/gitolite-campfire-notification) - the magic of Open Source!
 
 Hookie uses [grit](https://github.com/mojombo/grit) for accessing information in git repositories.
 
