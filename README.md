@@ -32,6 +32,14 @@ You then need to create a post-receive script in your repository's hooks directo
 
     Hookie::Framework.hook "post_receive"
 
+**NOTE** the above doesn't work if your gitolite user is using RVM as the gitolite shell won't have loaded RVM. The alternative hook script looks like this:
+
+    #!/bin/bash
+    source ~/.rvm/scripts/rvm
+    ruby -rhookie -e 'Hookie::Framework.hook "post_receive"'
+
+If you need to add your own custom plugins then add them with additional -r arguments (require)
+
 ### Installing hooks with gitolite
 
 The idea is that you install hookie as a post_receive hook for all your repositories, but configuration determines when the hook is actually run. To install for all repositories you create the post-receive script in the .gitolite/hooks/common/ directory.  Make sure the script is exectuable.
