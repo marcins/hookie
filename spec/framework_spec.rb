@@ -13,6 +13,7 @@ describe Hookie do
   context 'initialisation' do
     it "intialises" do
       hookie = Hookie::Framework.new "test_hook", Dir.getwd
+      hookie
     end
 
     it "can can use the hook static" do
@@ -38,6 +39,11 @@ describe Hookie do
       change[:ref].should eq "refs/heads/master"
 
       change[:commit].should be commit
+
+      change2 = hookie.changes[1]
+      change2[:old_hash].should eq "0000000000000000000000000000000000000000"
+      change2[:new_hash].should eq "09e6a76d20ae8c8e1d40ce21b6ea586ff860e5d3"
+      change2[:ref].should eq "refs/heads/develop"
     end
   end
 
