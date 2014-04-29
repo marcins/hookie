@@ -2,7 +2,7 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require 'hookie'
+require 'hookie/version'
 
 Gem::Specification.new do |gem|
   gem.name          = "hookie"
@@ -11,7 +11,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["marcins@webqem.com"]
   gem.description   = %q{Hookie provides a way to write git hooks with ruby without too much worrying about any of the plumbing required, you can easily write your own plugins and focus on the core of your functionality. 
 
-    Hookie includes plugins for Jenkins and HipChat.}
+    Hookie includes plugins for Jenkins, FishEye, and HipChat.}
   gem.summary       = %q{Framework for writing gitolite/git hooks with Ruby}
   gem.homepage      = "https://github.com/marcins/hookie"
 
@@ -23,5 +23,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'grit', '~> 2.5.0'
   gem.add_dependency 'diff-lcs', '~> 1.1.3'
 
+  gem.add_development_dependency 'rake', '>= 10.0.3'
   gem.add_development_dependency 'rspec', '~> 2.12.0'
+  gem.add_development_dependency 'simplecov', '>= 0.4.0'
 end
