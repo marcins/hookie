@@ -12,6 +12,8 @@ Hookie is designed so that you can have multiple actions take place as a result 
 
 Hookie includes those aforementioned plugins for HipChat and Jenkins in the base build.
 
+In addition there is now a FishEye plugin (as of v1.0.1)
+
 ## Acknowledgements
 
 Hookie is built on the base of @peplin's (gitolite-hipchat-notification)[https://github.com/peplin/gitolite-hipchat-notification] project, which was originally forked from (gitolite-campfire-notification)[https://github.com/LegionSB/gitolite-campfire-notification] - the magic of Open Source!
@@ -67,7 +69,7 @@ An example conf/gitolite.conf:
 
     repo testing
         RW+     =   @all
-        config hookie.core.allowedplugins = hipchat,jenkins
+        config hookie.core.allowedplugins = hipchat,jenkins,fisheye
         config hookie.hipchat.room = 123456
         config hookie.jenkins.url = http://jenkins.example.com/job/Test%20Job/build?token=test
         config hookie.jenkins.branches=develop
@@ -78,6 +80,8 @@ An example conf/gitolite.conf:
         config hookie.hipchat.from = "Git Test"
         config hookie.core.web.commit = https://fisheye.example.com/changelog/%REPO%?cs=%COMMIT%
         config hookie.core.web.browse = https://fisheye.example.com/browse/%REPO%
+        config hookie.fisheye.apikey = APIKEY
+        config hookie.fisheye.url = https://fisheye.example.com/rest-service-fecru/admin/repositories-v1/%REPO%/scan
 
 The following core keys are used by the framework:
 
@@ -93,6 +97,7 @@ The following plugins are shipped with Hookie:
 
 * HipChat - posts a notification to a HipChat room in response to a commit
 * Jenkins - triggers a Jenkins build in reponse to a commit
+* FishEye - triggers a scan of a FishEye repository in response to a commit
 
 ### HipChat
 
@@ -111,6 +116,13 @@ The following config keys apply to the Jenkins plugin:
 * **hookie.jenkins.url** - the trigger URL to be called for this repostiory (you should set this per-repository)
 * **hookie.jenkins.branches** - only trigger a build if the change set includes commits to the branches in this list. Comma separated. Default is to build for any commit.
 * **hookie.jenkins.auth** - the username:token combo to use to authenticate with Jenkins
+
+### FishEye
+
+The following config keys apply to the Fisheye plugin:
+
+* **hookie.fisheye.url** - the FishEye REST API URL (see the [FishEye docs](https://confluence.atlassian.com/display/FISHEYE033/Configuring+Commit+Hooks) for where to find this URL). You should use the placeholder `%REPO%` which will be replaced with the repo name
+* **hookie.fisheye.apikey** - the FishEye REST API Key (see the [FishEye docs](https://confluence.atlassian.com/display/FISHEYE033/Setting+the+REST+API+token) for where to obtain this token)
 
 ## Writing Plugins
 
